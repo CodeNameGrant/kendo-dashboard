@@ -6,16 +6,14 @@ export const cellDisplay = (data, expandRow) => {
     return null;
   }
 
-  const dataDisplay = data.slice(0, 3).map(item => item.name).join(', ')
-  if (data.length <= 3) {
-    return dataDisplay;
+  const dataDisplay = data.slice(0, 3).map(item => item.name).join(', ');
+  const showSeeMore = data.length > 3;
 
-  } else {
-    return (
-      <React.Fragment>
-        {dataDisplay}...
-        <Button look='flat' onClick={expandRow}>See All</Button>
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      {dataDisplay}
+      {showSeeMore && "..."}
+      {showSeeMore && <Button look='flat' onClick={expandRow}>See All</Button>}
+    </React.Fragment>
+  )
 }

@@ -193,6 +193,12 @@ export default function OperationalAreasPoc() {
 const DetailTemplate = ({ dataItem }) => (
   <>
     <div><strong>ID:</strong> {dataItem.id}</div>
-    <div><strong>Cities:</strong> {dataItem.cities && dataItem.cities.map(item => item.name).join(', ')}</div>
+
+    {dataItem.provinces.map(province => (
+      <div>
+        <strong>{province.name}:</strong>&nbsp;
+        {dataItem.cities && dataItem.cities.filter(item => item.province === province.id).map(item => item.name).join(', ')}
+      </div>
+    ))}
   </>
 )
