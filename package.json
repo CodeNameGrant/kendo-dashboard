@@ -11,7 +11,7 @@
     "@progress/kendo-react-charts": "^4.0.0",
     "@progress/kendo-react-data-tools": "^4.0.0",
     "@progress/kendo-react-dateinputs": "^4.0.0",
-    "@progress/kendo-react-dialogs": "^4.0.0",
+    "@progress/kendo-react-dialogs": "^4.1.0",
     "@progress/kendo-react-dropdowns": "^4.0.0",
     "@progress/kendo-react-form": "^4.0.0",
     "@progress/kendo-react-grid": "^4.0.0",

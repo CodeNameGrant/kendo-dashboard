@@ -13,7 +13,7 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
 
   useEffect(() => {
     setData(dataItem.province ? cities[dataItem.province.id] : [])
-  }, [])
+  }, [dataItem.province])
 
   const updateCities = (e) => {
     onChange({

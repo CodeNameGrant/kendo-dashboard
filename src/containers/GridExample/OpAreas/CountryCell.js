@@ -1,11 +1,9 @@
 import React from 'react'
-import { ComboBox, DropDownList } from '@progress/kendo-react-dropdowns';
+import { ComboBox } from '@progress/kendo-react-dropdowns';
 import { countries } from "./OperationalAreas";
 export default function DropDownCell({ dataItem, editField, onChange }) {
   const inEdit = dataItem[editField];
   const initialValue = dataItem.country === null ? null : dataItem.country;
-
-  console.log(dataItem);
 
   const onChangeHandler = (e) => {
     onChange({

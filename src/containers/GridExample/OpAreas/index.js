@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@progress/kendo-react-buttons';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
+import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
 import { OperationalAreas as data } from './OperationalAreas';
 import CommandCell from './CommandCell';
 import CountryCell from './CountryCell';
@@ -12,6 +13,8 @@ export default function OperationalAreas() {
 
   const [masterData, setMasterData] = useState([...data]);
   const [opAreas, setOpAreas] = useState([]);
+  const [showConfirmWindow, setShowConfirmWindow] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState(null);
 
   useEffect(() => {
     setOpAreas([...masterData])
@@ -26,7 +29,7 @@ export default function OperationalAreas() {
       save={save}
       cancel={cancel}
       discard={discard}
-      remove={remove}
+      remove={confirmRemoval}
     />
   }
 
@@ -134,7 +137,10 @@ export default function OperationalAreas() {
     })
   }
 
-
+  const confirmRemoval = (dataItem) => {
+    setItemToRemove(dataItem);
+    setShowConfirmWindow(true);
+  }
 
   return (
     <div>
@@ -153,6 +159,31 @@ export default function OperationalAreas() {
         <GridColumn field="cities" title="Cities" cell={renderCitiesCell} />
         <GridColumn title="Options" cell={renderOptionsCell} />
       </Grid>
+
+      {
+        showConfirmWindow &&
+        <Dialog title={'Remove Op Area'} onClose={() => setShowConfirmWindow(false)}>
+          <p>Are you sure you wish to remove this Op Area?</p>
+          <p>{itemToRemove.country.name} - {itemToRemove.province.name} - {itemToRemove.cities.map(item => item.name).join(', ')}</p>
+          <DialogActionsBar>
+            <Button
+              primary={true}
+              onClick={() => {
+                remove(itemToRemove);
+                setShowConfirmWindow(false);
+              }}
+            >Yes</Button>
+
+            <Button
+              look={'flat'}
+              onClick={() => {
+                setShowConfirmWindow(false);
+                setItemToRemove(null);
+              }}
+            >No</Button>
+          </DialogActionsBar>
+        </Dialog>
+      }
     </div>
   )
 }
