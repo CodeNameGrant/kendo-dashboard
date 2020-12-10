@@ -1,17 +1,15 @@
 import React from 'react'
 import { Button } from '@progress/kendo-react-buttons'
+import { validateCitiesAndProvinces } from './utils';
 
 export default function CommandCell({ dataItem, editField, edit, cancel, update, save, discard, remove }) {
   const inEdit = dataItem[editField];
   const isNew = dataItem.id === undefined;
 
   const isValid = (dataItem) => {
-    const provinceIds = dataItem.provinces.map(item => item.id);
-    const distinctCityProvinceIds = new Set(dataItem.cities.map(item => item.province));
-
     return dataItem.country &&
       dataItem.provinces.length !== 0 &&
-      provinceIds.length === distinctCityProvinceIds.size
+      validateCitiesAndProvinces(dataItem)
   }
 
   return (
