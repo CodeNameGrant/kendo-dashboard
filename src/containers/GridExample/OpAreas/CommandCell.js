@@ -6,9 +6,12 @@ export default function CommandCell({ dataItem, editField, edit, cancel, update,
   const isNew = dataItem.id === undefined;
 
   const isValid = (dataItem) => {
+    const provinceIds = dataItem.provinces.map(item => item.id);
+    const distinctCityProvinceIds = new Set(dataItem.cities.map(item => item.province));
+
     return dataItem.country &&
       dataItem.provinces.length !== 0 &&
-      dataItem.cities.length !== 0
+      provinceIds.length === distinctCityProvinceIds.size
   }
 
   return (
@@ -24,7 +27,7 @@ export default function CommandCell({ dataItem, editField, edit, cancel, update,
         inEdit &&
         (isNew
           ? <Button primary={true} onClick={() => save(dataItem)} disabled={!isValid(dataItem)}>Save</Button>
-          : <Button primary={true} onClick={() => update(dataItem)}>Update</Button>)
+          : <Button primary={true} onClick={() => update(dataItem)} disabled={!isValid(dataItem)}>Update</Button>)
       }
 
       {

@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { Button } from '@progress/kendo-react-buttons';
 import { getProvinceByCountry } from "./store/provinces";
-import { cellDisplay } from './utils';
 
-export default function DropDownCell({ dataItem, editField, onChange, expandRow }) {
+export default function ProvinceCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([]);
   const inEdit = dataItem[editField];
   const [value, setValue] = useState([...dataItem.provinces]);
@@ -50,8 +49,29 @@ export default function DropDownCell({ dataItem, editField, onChange, expandRow 
               [{ text: `All (${value.length})`, data: [...data] }] : undefined
             }
           />
-          : cellDisplay(dataItem.provinces)
+          : provinceCellContent(dataItem, expandRow)
       }
     </td>
+  )
+}
+
+const provinceCellContent = (dataItem, expandRow) => {
+  if (!dataItem) {
+    return null;
+  }
+
+  const displayAll = dataItem.country.provinceCount === dataItem.provinces.length;
+
+  let dataDisplay = dataItem.provinces.slice(0, 3).map(item => item.name).join(', ');
+  const showSeeMore = dataItem.provinces.length > 3;
+
+  return (
+    <React.Fragment>
+      {displayAll && "All"}
+
+      {!displayAll && dataDisplay}
+      {!displayAll && showSeeMore && "..."}
+      {!displayAll && showSeeMore && <Button look='flat' onClick={expandRow}>See All</Button>}
+    </React.Fragment>
   )
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { getCitiesByProvinces } from "./store/cities";
 import { Button } from '@progress/kendo-react-buttons';
-import { cellDisplay } from './utils';
 
 export default function CitiesCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([])
@@ -41,9 +40,30 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
               [{ text: `All (${value.length})`, data: [...data] }] : undefined
             }
           />
-          : cellDisplay(dataItem.cities, expandRow)
+          : cityCellContent(dataItem, expandRow)
       }
     </td>
   )
 }
 
+const cityCellContent = (dataItem, expandRow) => {
+  if (!dataItem) {
+    return null;
+  }
+
+  const totalCityCount = dataItem.provinces.reduce((total, province) => { return total + province.cityCount }, 0);
+  const displayAll = totalCityCount === dataItem.cities.length;
+
+  let dataDisplay = dataItem.cities.slice(0, 3).map(item => item.name).join(', ');
+  const showSeeMore = dataItem.cities.length > 3;
+
+  return (
+    <React.Fragment>
+      {displayAll && "All"}
+
+      {!displayAll && dataDisplay}
+      {!displayAll && showSeeMore && "..."}
+      {!displayAll && showSeeMore && <Button look='flat' onClick={expandRow}>See All</Button>}
+    </React.Fragment>
+  )
+}

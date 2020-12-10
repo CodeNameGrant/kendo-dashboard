@@ -157,7 +157,7 @@ export default function OperationalAreasPoc() {
           <Button primary onClick={() => add()}>Add</Button>
         </GridToolbar>
         <GridColumn field="country.name" title="Country" cell={renderCountryCell} />
-        <GridColumn field="provinces" title="Province" cell={renderProvinceCell} />
+        <GridColumn field="provinces" title="Provinces" cell={renderProvinceCell} />
         <GridColumn field="cities" title="Cities" cell={renderCitiesCell} />
         <GridColumn title="Options" cell={renderOptionsCell} />
       </Grid>
@@ -195,7 +195,7 @@ const DetailTemplate = ({ dataItem }) => (
     <div><strong>ID:</strong> {dataItem.id}</div>
 
     {dataItem.provinces.map(province => (
-      <div>
+      <div key={province.id}>
         <strong>{province.name}:</strong>&nbsp;
         {dataItem.cities && dataItem.cities.filter(item => item.province === province.id).map(item => item.name).join(', ')}
       </div>

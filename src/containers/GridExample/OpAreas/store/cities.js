@@ -1,4 +1,5 @@
 module.exports.Cities = [
+  // SA
   { "id": 1, "name": "Durban", "province": "KZN" },
   { "id": 2, "name": "PMB", "province": "KZN" },
   { "id": 3, "name": "New Castle", "province": "KZN" },
@@ -28,11 +29,19 @@ module.exports.Cities = [
   { "id": 27, "name": "Somerset West", "province": "WC" },
   { "id": 28, "name": "George", "province": "WC" },
 
-
+  // BotSwana
   { "id": 31, "name": "Ramotswa", "province": "GAB" },
-  { "id": 32, "name": "Mogoditshane ", "province": "GAB" },
-  { "id": 33, "name": "Mochudi ", "province": "GAB" },
-  { "id": 34, "name": "Tlokweng ", "province": "GAB" },
+  { "id": 32, "name": "Mogoditshane", "province": "GAB" },
+  { "id": 33, "name": "Mochudi", "province": "GAB" },
+  { "id": 34, "name": "Tlokweng", "province": "GAB" },
+
+  // Namibia
+  { "id": 40, "name": "Epupa", "province": "KUN" },
+  { "id": 41, "name": "Kamanjab", "province": "KUN" },
+  { "id": 42, "name": "Khorixas", "province": "KUN" },
+  { "id": 43, "name": "Opuwo Rural", "province": "KUN" },
+  { "id": 44, "name": "Opuwo Urban", "province": "KUN" },
+  { "id": 45, "name": "Outjo", "province": "KUN" }
 ]
 
 module.exports.getCitiesByProvince = (province) => {
@@ -43,4 +52,12 @@ module.exports.getCitiesByProvinces = (provinces) => {
   return provinces.reduce((data, province) => {
     return data.concat(this.getCitiesByProvince(province));
   }, [])
+}
+
+module.exports.findCities = (field, ...values) => {
+  return this.Cities.filter(item => values.indexOf(item[field]) !== -1);
+}
+
+module.exports.getCitiesById = (...ids) => {
+  return this.Cities.filter(item => ids.indexOf(item.id) !== -1);
 }
