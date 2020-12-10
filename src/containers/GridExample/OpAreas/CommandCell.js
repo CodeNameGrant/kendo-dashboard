@@ -5,6 +5,12 @@ export default function CommandCell({ dataItem, editField, edit, cancel, update,
   const inEdit = dataItem[editField];
   const isNew = dataItem.id === undefined;
 
+  const isValid = (dataItem) => {
+    return dataItem.country &&
+      dataItem.provinces.length !== 0 &&
+      dataItem.cities.length !== 0
+  }
+
   return (
     <td className='k-command-cell'>
       {!inEdit && (
@@ -17,7 +23,7 @@ export default function CommandCell({ dataItem, editField, edit, cancel, update,
       {
         inEdit &&
         (isNew
-          ? <Button primary={true} onClick={() => save(dataItem)} disabled={!dataItem.country || !dataItem.province || dataItem.cities.length === 0}>Save</Button>
+          ? <Button primary={true} onClick={() => save(dataItem)} disabled={!isValid(dataItem)}>Save</Button>
           : <Button primary={true} onClick={() => update(dataItem)}>Update</Button>)
       }
 

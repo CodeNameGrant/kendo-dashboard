@@ -90,7 +90,7 @@ export default function OperationalAreas() {
   const add = () => {
     setOpAreas((prevState) => {
       return [
-        { inEdit: true, Discontinued: false },
+        { country: null, provinces: [], cities: [], inEdit: true, Discontinued: false },
         ...opAreas
       ]
     })
@@ -164,7 +164,7 @@ export default function OperationalAreas() {
         showConfirmWindow &&
         <Dialog title={'Remove Op Area'} onClose={() => setShowConfirmWindow(false)}>
           <p>Are you sure you wish to remove this Op Area?</p>
-          <p>{itemToRemove.country.name} - {itemToRemove.province.name} - {itemToRemove.cities.map(item => item.name).join(', ')}</p>
+          <p>TODO</p>
           <DialogActionsBar>
             <Button
               primary={true}

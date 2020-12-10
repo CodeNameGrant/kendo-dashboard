@@ -71,7 +71,7 @@ module.exports.OperationalAreas = [
   {
     id: 1,
     country: { id: "ZAR", name: "South Africa" },
-    province: { id: "KZN", name: "KZN" },
+    provinces: [{ id: "KZN", name: "KZN" }],
     cities: [
       { id: 1, name: "Durban" },
       { id: 2, name: "PMB" },
@@ -82,7 +82,7 @@ module.exports.OperationalAreas = [
   {
     id: 2,
     country: { id: "ZAR", name: "South Africa" },
-    province: { id: "GAU", name: "Gauteng" },
+    provinces: [{ id: "GAU", name: "Gauteng" }],
     cities: [
       { id: 11, name: "Jo'berg" },
       { id: 12, name: "Pretoria" },
@@ -93,7 +93,7 @@ module.exports.OperationalAreas = [
   {
     id: 3,
     country: { id: "BOT", name: "Botswana" },
-    province: { id: "GAB", name: "Gaborone City" },
+    provinces: [{ id: "GAB", name: "Gaborone City" }],
     cities: [
       { id: 31, name: "Ramotswa" },
       { id: 32, name: "Mogoditshane " },

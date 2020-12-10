@@ -12,8 +12,12 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
   const allSelected = value.length > 0 && value.length === data.length;
 
   useEffect(() => {
-    setData(dataItem.province ? cities[dataItem.province.id] : [])
-  }, [dataItem.province])
+    const allCities = dataItem.provinces.reduce((data, province) => {
+      return data.concat(cities[province.id]);
+    }, [])
+
+    setData(allCities)
+  }, [dataItem.provinces])
 
   const updateCities = (e) => {
     onChange({
@@ -34,7 +38,7 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
             dataItemKey='id'
             textField='name'
             value={value}
-            disabled={!dataItem.province}
+            disabled={dataItem.provinces.length === 0}
             onClose={updateCities}
             onChange={updateCities}
             placeholder="Select Cities..."

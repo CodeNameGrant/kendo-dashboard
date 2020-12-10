@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { ComboBox } from '@progress/kendo-react-dropdowns';
+import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { Button } from '@progress/kendo-react-buttons';
 import { provinces } from "./OperationalAreas";
+import { cellDisplay } from './utils';
 
 export default function DropDownCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([]);
   const inEdit = dataItem[editField];
-  const initialValue = !dataItem.province ? [] : dataItem.province;
+  const initialValue = !dataItem.provinces ? [] : dataItem.provinces;
   const [value, setValue] = useState(initialValue);
+  const allSelected = value.length > 0 && value.length === data.length;
 
   useEffect(() => {
     const data = dataItem.country ? provinces[dataItem.country.id] : [];
@@ -15,10 +17,10 @@ export default function DropDownCell({ dataItem, editField, onChange, expandRow 
     setData(data)
   }, [dataItem.country]);
 
-  const onChangeHandler = (e) => {
+  const updateProvinces = (e) => {
     onChange({
       dataItem,
-      field: 'province',
+      field: 'provinces',
       syntheticEvent: e.syntheticEvent,
       value: e.target.value
     });
@@ -35,17 +37,21 @@ export default function DropDownCell({ dataItem, editField, onChange, expandRow 
     <td>
       {
         inEdit
-          ? <ComboBox
-            footer={<Button onClick={() => setValue(provinces[dataItem.country.id])}>Select All</Button>}
+          ? <MultiSelect
+            footer={<Button onClick={() => setValue([...data])}>Select All</Button>}
             data={data}
             dataItemKey='id'
             textField='name'
             value={value}
             disabled={!dataItem.country}
-            onChange={onChangeHandler}
+            onClose={updateProvinces}
+            onChange={updateProvinces}
             placeholder="Select Provinces..."
+            tags={allSelected ?
+              [{ text: `All (${value.length})`, data: [...data] }] : undefined
+            }
           />
-          : dataItem.province.name
+          : cellDisplay(dataItem.provinces)
       }
     </td>
   )
