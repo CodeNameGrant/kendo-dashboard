@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { Button } from '@progress/kendo-react-buttons';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
-import { OperationalAreas as data } from './OperationalAreas';
+import { OperationalAreas } from './store/operational-areas';
 import CommandCell from './CommandCell';
 import CountryCell from './CountryCell';
 import ProvinceCell from './ProvinceCell';
 import CitiesCell from './CitiesCell';
 
-export default function OperationalAreas() {
+export default function OperationalAreasPoc() {
   const editField = 'inEdit';
 
-  const [masterData, setMasterData] = useState([...data]);
-  const [opAreas, setOpAreas] = useState([]);
+  const [remoteData, setRemoteData] = useState([...OperationalAreas]);
+  const [localData, setLocalData] = useState([]);
   const [showConfirmWindow, setShowConfirmWindow] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
 
   useEffect(() => {
-    setOpAreas([...masterData])
-  }, [masterData])
+    setLocalData([...remoteData])
+  }, [remoteData])
 
   const renderOptionsCell = (props) => {
     return <CommandCell
@@ -60,44 +60,18 @@ export default function OperationalAreas() {
     )
   }
 
-  const enterEdit = (dataItem) => {
-    setOpAreas((prevState) => {
-      return prevState.map(opArea =>
-        opArea.id === dataItem.id ? { ...opArea, inEdit: true } : opArea
-      )
-    })
-  }
-
-  const cancel = (dataItem) => {
-    const origOpArea = masterData.find(item => item.id === dataItem.id)
-
-    setOpAreas((prevState) => {
-      return prevState.map(opArea =>
-        opArea.id === origOpArea.id ? origOpArea : opArea
-      )
-    })
-  }
-
-  const update = (dataItem) => {
-    dataItem[editField] = false;
-    const index = masterData.findIndex(item => item.id === dataItem.id)
-    const updatedOpAreas = [...masterData];
-    updatedOpAreas[index] = dataItem;
-
-    setMasterData(updatedOpAreas);
-  }
-
+  // For New Record
   const add = () => {
-    setOpAreas((prevState) => {
+    setLocalData((prevState) => {
       return [
-        { country: null, provinces: [], cities: [], inEdit: true, Discontinued: false },
-        ...opAreas
+        { country: null, provinces: [], cities: [], inEdit: true },
+        ...localData
       ]
     })
   }
 
   const save = (dataItem) => {
-    setMasterData((prevState) => {
+    setRemoteData((prevState) => {
       return [
         { id: Math.random(), ...dataItem, inEdit: false },
         ...prevState
@@ -106,15 +80,43 @@ export default function OperationalAreas() {
   }
 
   const discard = () => {
-    setOpAreas((prevState) => prevState.filter(item => item.id !== undefined))
+    setLocalData((prevState) => prevState.filter(item => item.id !== undefined))
+  }
+
+  // For Existing Record
+  const enterEdit = (dataItem) => {
+    setLocalData((prevState) => {
+      return prevState.map(opArea =>
+        opArea.id === dataItem.id ? { ...opArea, inEdit: true } : opArea
+      )
+    })
+  }
+
+  const update = (dataItem) => {
+    dataItem[editField] = false;
+    const index = remoteData.findIndex(item => item.id === dataItem.id)
+    const updatedOpAreas = [...remoteData];
+    updatedOpAreas[index] = dataItem;
+
+    setRemoteData(updatedOpAreas);
+  }
+
+  const cancel = (dataItem) => {
+    const origOpArea = remoteData.find(item => item.id === dataItem.id)
+
+    setLocalData((prevState) => {
+      return prevState.map(opArea =>
+        opArea.id === origOpArea.id ? origOpArea : opArea
+      )
+    })
   }
 
   const remove = (dataItem) => {
-    setOpAreas((prevState) => prevState.filter(item => item.id !== dataItem.id))
+    setRemoteData((prevState) => prevState.filter(item => item.id !== dataItem.id))
   }
 
   const onItemChangeHandler = ({ dataItem, field, value }) => {
-    setOpAreas((prevState) => {
+    setLocalData((prevState) => {
       return prevState.map(opArea =>
         opArea.id === dataItem.id ? { ...opArea, [field]: value } : opArea
       )
@@ -122,7 +124,7 @@ export default function OperationalAreas() {
   }
 
   const onExpandChangeHandler = ({ dataItem }) => {
-    setOpAreas((prevState) => {
+    setLocalData((prevState) => {
       return prevState.map(opArea =>
         opArea.id === dataItem.id ? { ...opArea, expanded: !opArea.expanded } : opArea
       )
@@ -130,7 +132,7 @@ export default function OperationalAreas() {
   }
 
   const expandRow = ({ dataItem }) => {
-    setOpAreas((prevState) => {
+    setLocalData((prevState) => {
       return prevState.map(opArea =>
         opArea.id === dataItem.id ? { ...opArea, expanded: true } : opArea
       )
@@ -145,7 +147,7 @@ export default function OperationalAreas() {
   return (
     <div>
       <Grid
-        data={opAreas}
+        data={localData}
         editField={editField}
         onItemChange={onItemChangeHandler}
         expandField='expanded'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComboBox } from '@progress/kendo-react-dropdowns';
-import { countries } from "./OperationalAreas";
+import { Countries } from "./store/countries";
 export default function DropDownCell({ dataItem, editField, onChange }) {
   const inEdit = dataItem[editField];
   const initialValue = dataItem.country === null ? null : dataItem.country;
@@ -33,7 +33,7 @@ export default function DropDownCell({ dataItem, editField, onChange }) {
       {
         inEdit
           ? <ComboBox
-            data={countries}
+            data={Countries}
             dataItemKey='id'
             textField='name'
             placeholder={'Select a Country...'}

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { Button } from '@progress/kendo-react-buttons';
-import { provinces } from "./OperationalAreas";
+import { getProvinceByCountry } from "./store/provinces";
 import { cellDisplay } from './utils';
 
 export default function DropDownCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([]);
   const inEdit = dataItem[editField];
-  const initialValue = !dataItem.provinces ? [] : dataItem.provinces;
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState([...dataItem.provinces]);
   const allSelected = value.length > 0 && value.length === data.length;
 
   useEffect(() => {
-    const data = dataItem.country ? provinces[dataItem.country.id] : [];
+    const data = dataItem.country ? getProvinceByCountry(dataItem.country) : [];
 
     setData(data)
   }, [dataItem.country]);
