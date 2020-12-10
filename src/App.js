@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+
+import Layout from './hoc/Layout';
+
+import Dashboard from './containers/Dashboard';
+import GridExample from './containers/GridExample';
+import Form from './containers/MyForm';
+import TreeExample from './containers/TreeExample';
+
+import '@progress/kendo-theme-material/dist/all.css'
+import 'bootstrap-4-grid/css/grid.min.css';
 import './App.css';
 
-function App() {
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/grids" component={GridExample} />
+        <Route path="/forms" component={Form} />
+        <Route path="/tree" component={TreeExample} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Redirect to='/forms' />
+      </Switch>
+    </Layout>
   );
+
 }
 
-export default App;
+export default withRouter(App);
+

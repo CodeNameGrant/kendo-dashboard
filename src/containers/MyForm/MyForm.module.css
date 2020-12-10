@@ -1,0 +1,15 @@
+.Forms {
+  display: flex;
+  margin-top: 50px;
+}
+
+.Forms:not(:first-child) {
+  margin-top: 50px;
+}
+
+.Forms>form {
+  flex-basis: 0;
+  flex: 1 1 0px;
+  margin: 20px;
+  
+}
