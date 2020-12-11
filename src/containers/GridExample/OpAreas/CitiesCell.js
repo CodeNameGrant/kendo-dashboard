@@ -3,6 +3,7 @@ import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { findCities } from "./store/cities";
 import { Button } from '@progress/kendo-react-buttons';
 import { getProvinceIds } from './store/provinces';
+import { validateCitiesAndProvinces } from './utils';
 
 export default function CitiesCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([])
@@ -27,20 +28,24 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
     <td>
       {
         inEdit
-          ? <MultiSelect
-            footer={<Button onClick={() => setValue([...data])}>Select All</Button>}
-            data={data}
-            dataItemKey='id'
-            textField='name'
-            value={value}
-            disabled={dataItem.provinces.length === 0}
-            onClose={updateCities}
-            onChange={updateCities}
-            placeholder="Select Cities..."
-            tags={allSelected ?
-              [{ text: `All (${value.length})`, data: [...data] }] : undefined
-            }
-          />
+          ? <React.Fragment>
+            <MultiSelect
+              footer={<Button onClick={() => setValue([...data])}>Select All</Button>}
+              data={data}
+              dataItemKey='id'
+              textField='name'
+              value={value}
+              disabled={dataItem.provinces.length === 0}
+              onClose={updateCities}
+              onChange={updateCities}
+              placeholder="Select Cities..."
+              tags={allSelected ?
+                [{ text: `All (${value.length})`, data: [...data] }] : undefined
+              }
+            />
+            {!validateCitiesAndProvinces(dataItem) && <span style={{ color: 'red' }}>At least one city must be selected from each province</span>}
+          </React.Fragment>
+
           : cityCellContent(dataItem, expandRow)
       }
     </td>
