@@ -67,7 +67,7 @@ const provinceCellContent = (dataItem, expandRow) => {
 
   return (
     <React.Fragment>
-      {displayAll && "All"}
+      {displayAll && `All (${dataItem.provinces.length})`}
 
       {!displayAll && dataDisplay}
       {!displayAll && showSeeMore && "..."}

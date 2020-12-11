@@ -60,7 +60,7 @@ const cityCellContent = (dataItem, expandRow) => {
 
   return (
     <React.Fragment>
-      {displayAll && "All"}
+      {displayAll && `All (${dataItem.cities.length})`}
 
       {!displayAll && dataDisplay}
       {!displayAll && showSeeMore && "..."}
