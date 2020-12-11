@@ -44,16 +44,6 @@ module.exports.Cities = [
   { "id": 45, "name": "Outjo", "province": "KUN" }
 ]
 
-module.exports.getCitiesByProvince = (province) => {
-  return this.Cities.filter(item => item.province === province.id)
-}
-
-module.exports.getCitiesByProvinces = (provinces) => {
-  return provinces.reduce((data, province) => {
-    return data.concat(this.getCitiesByProvince(province));
-  }, [])
-}
-
 module.exports.findCities = (field, ...values) => {
   return this.Cities.filter(item => values.indexOf(item[field]) !== -1);
 }
