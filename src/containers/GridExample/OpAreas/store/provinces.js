@@ -20,3 +20,7 @@ module.exports.getProvinceByCountry = (country) => {
 module.exports.findProvince = (field, ...values) => {
   return this.Provinces.filter(item => values.indexOf(item[field]) !== -1);
 }
+
+module.exports.getProvinceIds = (provinces) => {
+  return provinces.map(item => item.id);
+}

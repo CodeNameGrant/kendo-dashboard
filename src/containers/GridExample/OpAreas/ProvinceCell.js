@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { Button } from '@progress/kendo-react-buttons';
-import { getProvinceByCountry } from "./store/provinces";
+import { getProvinceByCountry, getProvinceIds } from "./store/provinces";
+import { findCitiesIn } from './store/cities';
 
 export default function ProvinceCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([]);
@@ -23,11 +24,14 @@ export default function ProvinceCell({ dataItem, editField, onChange, expandRow 
       value: e.target.value
     });
 
+    // Maintain selected cities on province change
+    const updatedCities = findCitiesIn(dataItem.cities, 'province', ...getProvinceIds(e.target.value));
+
     onChange({
       dataItem,
       field: 'cities',
       syntheticEvent: e.syntheticEvent,
-      value: []
+      value: updatedCities
     });
   }
 

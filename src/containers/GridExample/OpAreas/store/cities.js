@@ -48,6 +48,6 @@ module.exports.findCities = (field, ...values) => {
   return this.Cities.filter(item => values.indexOf(item[field]) !== -1);
 }
 
-module.exports.getCitiesById = (...ids) => {
-  return this.Cities.filter(item => ids.indexOf(item.id) !== -1);
+module.exports.findCitiesIn = (cityArr, field, ...values) => {
+  return cityArr.filter(item => values.indexOf(item[field]) !== -1);
 }

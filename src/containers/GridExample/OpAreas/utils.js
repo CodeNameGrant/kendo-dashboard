@@ -1,3 +1,5 @@
+import { getProvinceIds } from "./store/provinces";
+
 /**
  * Returns a boolean indicating if each province is represented by a city
  * 
@@ -5,7 +7,7 @@
  * @returns {boolean}
  */
 export const validateCitiesAndProvinces = (dataItem) => {
-  const provinceIds = dataItem.provinces.map(item => item.id);
+  const provinceIds = getProvinceIds(dataItem.provinces);
   const distinctCityProvinceIds = new Set(dataItem.cities.map(item => item.province));
 
   return provinceIds.length === distinctCityProvinceIds.size;

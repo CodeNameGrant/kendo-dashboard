@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { findCities } from "./store/cities";
 import { Button } from '@progress/kendo-react-buttons';
+import { getProvinceIds } from './store/provinces';
 
 export default function CitiesCell({ dataItem, editField, onChange, expandRow }) {
   const [data, setData] = useState([])
@@ -10,8 +11,7 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
   const allSelected = value.length > 0 && value.length === data.length;
 
   useEffect(() => {
-    const provinceIds = dataItem.provinces.map(item => item.id)
-    setData(findCities('province', ...provinceIds))
+    setData(findCities('province', ...getProvinceIds(dataItem.provinces)))
   }, [dataItem.provinces])
 
   const updateCities = (e) => {
