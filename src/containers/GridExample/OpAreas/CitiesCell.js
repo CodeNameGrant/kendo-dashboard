@@ -28,24 +28,28 @@ export default function CitiesCell({ dataItem, editField, onChange, expandRow })
     <td>
       {
         inEdit
-          ? <React.Fragment>
-            <MultiSelect
-              footer={<Button onClick={() => setValue([...data])}>Select All</Button>}
-              data={data}
-              dataItemKey='id'
-              textField='name'
-              value={value}
-              disabled={dataItem.provinces.length === 0}
-              onClose={updateCities}
-              onChange={updateCities}
-              placeholder="Select Cities..."
-              tags={allSelected ?
-                [{ text: `All (${value.length})`, data: [...data] }] : undefined
+          ? (
+            <React.Fragment>
+              <MultiSelect
+                footer={<Button onClick={() => setValue([...data])}>Select All</Button>}
+                data={data}
+                dataItemKey='id'
+                textField='name'
+                value={value}
+                disabled={dataItem.provinces.length === 0}
+                onClose={updateCities}
+                onChange={updateCities}
+                placeholder="Select Cities..."
+                tags={allSelected ?
+                  [{ text: `All (${value.length})`, data: [...data] }] : undefined
+                }
+              />
+              {
+                !validateCitiesAndProvinces(dataItem) &&
+                <span style={{ color: 'red', fontSize: '0.75rem' }}>At least one city from each province must be selected.</span>
               }
-            />
-            {!validateCitiesAndProvinces(dataItem) && <span style={{ color: 'red' }}>At least one city must be selected from each province</span>}
-          </React.Fragment>
-
+            </React.Fragment>
+          )
           : cityCellContent(dataItem, expandRow)
       }
     </td>
