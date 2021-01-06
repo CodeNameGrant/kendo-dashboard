@@ -8,6 +8,7 @@ import Dashboard from './containers/Dashboard';
 import GridExample from './containers/GridExample';
 import Form from './containers/MyForm';
 import TreeExample from './containers/TreeExample';
+import Widgets from './containers/Widgets';
 
 import '@progress/kendo-theme-material/dist/all.css'
 import 'bootstrap-4-grid/css/grid.min.css';
@@ -22,7 +23,8 @@ const App = () => {
         <Route path="/forms" component={Form} />
         <Route path="/tree" component={TreeExample} />
         <Route path="/dashboard" component={Dashboard} />
-        <Redirect to='/forms' />
+        <Route path="/widgets" component={Widgets} />
+        <Redirect to='/widgets' />
       </Switch>
     </Layout>
   );

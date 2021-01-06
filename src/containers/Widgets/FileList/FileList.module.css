@@ -1,0 +1,46 @@
+.Container {
+  width: 500px; /* TODO fill container */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.Header {
+  background-color: #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  border-bottom: solid ccc 1px;
+}
+
+.Header .Text {
+  color: #999;
+}
+
+.FileList {
+  margin: 0;
+  padding: 0px;
+}
+
+.FileListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.FileListItem:not(:last-of-type) {
+  margin-bottom: 5px;
+  border-bottom: solid #ccc 1px;
+}
+
+.FileNameSizeWrapper {
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.FileSize {
+  font-size: 0.75em;
+  color: #999;
+}

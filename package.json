@@ -22,6 +22,7 @@
     "@progress/kendo-react-progressbars": "^4.0.0",
     "@progress/kendo-react-ripple": "^4.0.0",
     "@progress/kendo-react-treeview": "^4.0.0",
+    "@progress/kendo-react-upload": "^4.1.0",
     "@progress/kendo-theme-material": "^3.19.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",

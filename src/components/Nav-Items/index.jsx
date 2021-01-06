@@ -11,6 +11,7 @@ const NavItems = (props) => {
       <NavItem link='/forms'>My Form</NavItem>
       <NavItem link='/grids'>My Grid</NavItem>
       <NavItem link='/dashboard'>Dashboard</NavItem>
+      <NavItem link='/widgets'>Widgets</NavItem>
     </ul>
   )
 }
