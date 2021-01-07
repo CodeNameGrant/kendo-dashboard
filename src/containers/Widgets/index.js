@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TabStrip, TabStripTab } from '@progress/kendo-react-layout';
 
-import FileList from './FileList';
+import AttachmentManager from './AttachmentManager';
 export default function Widgets() {
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -25,8 +25,8 @@ export default function Widgets() {
 
   return (
     <TabStrip selected={selectedTab} onSelect={({ selected }) => setSelectedTab(selected)}>
-      <TabStripTab title="File List">
-        <FileList files={files} addFiles={addFiles} removeFile={removeFile} />
+      <TabStripTab title="Attachment Manager">
+        <AttachmentManager multiple files={files} removeFile={removeFile} />
       </TabStripTab>
 
     </TabStrip>

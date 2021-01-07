@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { Button } from '@progress/kendo-react-buttons';
 
-import classes from './FileList.module.css';
+import { humanFileSize } from '../../../utils/MathUtls';
+
+import classes from './AttachmentManager.module.css';
 
 export default function FileList({ files, addFiles, removeFile, multiple = false }) {
-
   const fileInputRef = useRef();
   const fileChangeHandler = (e) => {
     const files = e.target.files;
@@ -73,15 +74,14 @@ const ListItem = ({ file, removeFile }) => (
 
     <div className={classes.FileNameSizeWrapper}>
       <div>
-        {
-          file.url ?
-            <a href={file.url} target={'_blank'} rel="noopener noreferrer">{file.name}</a>
-            : file.name
-        }
+        {file.name}
       </div>
-      <div className={classes.FileSize}>{file.size}</div>
+      <div className={classes.FileSize}>{humanFileSize(file.size, true)}</div>
     </div>
 
-    {removeFile && <Button look={'flat'} icon={'close'} onClick={(e) => removeFile(file.name)} />}
+    <div className={classes.FileItemActionWrapper}>
+      {file.url && <Button look={'flat'} icon={'folder-open'} onClick={(e) => window.open(file.url, '_blank')} />}
+      {removeFile && <Button look={'flat'} icon={'close'} onClick={(e) => removeFile(file.name)} />}
+    </div>
   </li>
 )
