@@ -55,7 +55,6 @@ export default function FileList({ files, addFiles, removeFile, multiple = false
         )}
 
         {files.length > 0 && <List files={files} removeFile={removeFile} />}
-
       </div>
 
     </React.Fragment>
@@ -64,12 +63,12 @@ export default function FileList({ files, addFiles, removeFile, multiple = false
 
 const List = ({ files, removeFile }) => {
   return <ul type={'none'} className={classes.FileList}>
-    {files.map(file => <ListItem file={file} removeFile={removeFile} />)}
+    {files.map(file => <ListItem key={file.name} file={file} removeFile={removeFile} />)}
   </ul>
 }
 
 const ListItem = ({ file, removeFile }) => (
-  <li key={file.name} className={classes.FileListItem}>
+  <li className={classes.FileListItem}>
     <span className="k-icon k-i-pdf" style={{ fontSize: "32px", color: '#999' }} />
 
     <div className={classes.FileNameSizeWrapper}>
@@ -81,7 +80,7 @@ const ListItem = ({ file, removeFile }) => (
 
     <div className={classes.FileItemActionWrapper}>
       {file.url && <Button look={'flat'} icon={'folder-open'} onClick={(e) => window.open(file.url, '_blank')} />}
-      {removeFile && <Button look={'flat'} icon={'close'} onClick={(e) => removeFile(file.name)} />}
+      {removeFile && <Button look={'flat'} icon={'close'} onClick={(e) => removeFile(file)} />}
     </div>
   </li>
 )
