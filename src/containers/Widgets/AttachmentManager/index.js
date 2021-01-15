@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 import { Button } from '@progress/kendo-react-buttons';
 
-import { humanFileSize } from '../../../utils/MathUtls';
+import { humanFileSize } from '../../../utils/FileUtils';
 
 import classes from './AttachmentManager.module.css';
 
