@@ -1,86 +1,163 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext, useState } from "react";
 
-import { Button } from '@progress/kendo-react-buttons';
+import { Button } from "@progress/kendo-react-buttons";
 
-import { humanFileSize } from '../../../utils/FileUtils';
+import classes from "./AttachmentManager.module.css";
+import { getFileExtension, humanFileSize } from "../../../utils/FileUtils";
 
-import classes from './AttachmentManager.module.css';
+const RemoveAttContext = React.createContext(undefined);
 
-export default function FileList({ files, addFiles, removeFile, multiple = false }) {
+export default function FileList({
+  attachments,
+  addAttachments,
+  removeAttachment,
+  multiple = false,
+  allowedExtensions = ['pdf', 'jpg']
+}) {
+  const [preventedFiles, setPreventedFiles] = useState(["wrong-file.jpg", "wrong-file-2.jpg"]);
+
   const fileInputRef = useRef();
   const fileChangeHandler = (e) => {
-    const files = e.target.files;
-
-    addFiles(Object.values(files).map(file => {
-      file.extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length);
-
-      return file;
-    }));
-  }
+    addFilesHandler(e.target.files);
+  };
 
   const dragEnterHandler = (e) => {
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
   const dragOverHandler = (e) => {
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
   const dropHandler = (e) => {
     e.stopPropagation();
     e.preventDefault();
 
-    const dt = e.dataTransfer;
-    const files = dt.files;
+    addFilesHandler(e.dataTransfer.files);
+  };
 
-    addFiles(Object.values(files).map(file => {
-      file.extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length);
+  const addFilesHandler = (filesToAdd) => {
+    setPreventedFiles([]);  // Clear 
+    let fileList = Object.values(filesToAdd).map((file) => file)
 
-      return file;
-    }));
-  }
+    if (allowedExtensions.length > 0) {
+      fileList = fileList.filter(file => {
+        if (allowedExtensions.includes(getFileExtension(file.name))) {
+          return true;
+        } else {
+          setPreventedFiles((prevState) => [...prevState, file.name]);
+          return false;
+        }
+      })
+    }
+
+    addAttachments(
+      fileList
+    );
+  };
+
+  console.log("preventedFiles", preventedFiles);
 
   return (
-    <React.Fragment>
-      {addFiles && <input type="file" multiple={multiple} ref={fileInputRef} onChange={fileChangeHandler} style={{ display: 'none' }} />}
-
+    <RemoveAttContext.Provider value={{ removeAttachment }}>
       <div className={classes.Container}>
-        {addFiles && (
-          <div className={classes.Header} onDrop={dropHandler} onDragEnter={dragEnterHandler} onDragOver={dragOverHandler}>
-            <Button onClick={() => fileInputRef.current.click()}>Select Files...</Button>
-            <span className={classes.Text}>Drag & Drop files here to upload</span>
+        {addAttachments && (
+
+          <div
+            className={classes.Header}
+            onDrop={dropHandler}
+            onDragEnter={dragEnterHandler}
+            onDragOver={dragOverHandler}
+          >
+            <div className={classes.Operations}>
+              <input
+                type="file"
+                multiple={multiple}
+                ref={fileInputRef}
+                onChange={fileChangeHandler}
+                style={{ display: "none" }}
+              />
+
+              <Button onClick={() => fileInputRef.current.click()}>
+                Select Files...
+            </Button>
+
+              <span className={classes.Text}>
+                Drag & drop files here to attach them
+            </span>
+            </div>
+
+            <div className={classes.Restrictions}>
+              {allowedExtensions.length > 0 &&
+                <div>N.B. The following restrictions are in place.</div>}
+
+              {allowedExtensions.length > 0 &&
+                <div>Allowed File Types: {allowedExtensions.join(', ')}</div>}
+            </div>
           </div>
         )}
 
-        {files.length > 0 && <List files={files} removeFile={removeFile} />}
+        {attachments.length > 0 && <List attachments={attachments} />}
+
+        {
+          preventedFiles.length > 0 &&
+          <div className={classes.Error}>
+            The following files cannot be attached:<br />
+            {preventedFiles.map(fileName => <div>{fileName}</div>)}
+          </div>
+        }
+      </div>
+    </RemoveAttContext.Provider>
+  );
+}
+
+const List = ({ attachments }) => {
+  return (
+    <ul type={"none"} className={classes.FileList}>
+      {attachments.map((attachment) => (
+        <ListItem key={attachment.name} attachment={attachment} />
+      ))}
+    </ul>
+  );
+};
+
+const ListItem = ({ attachment }) => {
+  const { removeAttachment } = useContext(RemoveAttContext);
+
+  return (
+    <li className={classes.FileListItem}>
+      <span
+        className="k-icon k-i-pdf"
+        style={{ fontSize: "32px", color: "#999" }}
+      />
+
+      <div className={classes.FileNameSizeWrapper}>
+        <div>{attachment.name}</div>
+        {attachment.size && (
+          <div className={classes.FileSize}>
+            {humanFileSize(attachment.size, true)}
+          </div>
+        )}
       </div>
 
-    </React.Fragment>
-  )
-}
-
-const List = ({ files, removeFile }) => {
-  return <ul type={'none'} className={classes.FileList}>
-    {files.map(file => <ListItem key={file.name} file={file} removeFile={removeFile} />)}
-  </ul>
-}
-
-const ListItem = ({ file, removeFile }) => (
-  <li className={classes.FileListItem}>
-    <span className="k-icon k-i-pdf" style={{ fontSize: "32px", color: '#999' }} />
-
-    <div className={classes.FileNameSizeWrapper}>
       <div>
-        {file.name}
+        {attachment.url && (
+          <Button
+            look={"flat"}
+            icon={"folder-open"}
+            onClick={(e) => window.open(attachment.url, "_blank")}
+          />
+        )}
+        {removeAttachment && (
+          <Button
+            look={"flat"}
+            icon={"close"}
+            onClick={(e) => removeAttachment(attachment)}
+          />
+        )}
       </div>
-      <div className={classes.FileSize}>{humanFileSize(file.size, true)}</div>
-    </div>
-
-    <div className={classes.FileItemActionWrapper}>
-      {file.url && <Button look={'flat'} icon={'folder-open'} onClick={(e) => window.open(file.url, '_blank')} />}
-      {removeFile && <Button look={'flat'} icon={'close'} onClick={(e) => removeFile(file)} />}
-    </div>
-  </li>
-)
+    </li>
+  );
+};

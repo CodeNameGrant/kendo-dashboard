@@ -1,34 +1,48 @@
 .Container {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
+  max-width: 500px;
 }
 
 .Header {
   background-color: #eee;
+  padding: 5px;
+  min-width: 400px;
+  border-bottom: solid #ccc 1px;
+}
+
+.Operations {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  min-width: 400px;
-  border-bottom: solid ccc 1px;
+}
+
+.Restrictions {
+  margin-top: 5px;
+  font-style: italic;
 }
 
 .Header .Text {
   color: #999;
 }
 
+.Error {
+  border-top: 1px solid #802638;
+  background-color: #FF5F5E;
+  margin-top: 5px;
+  padding: 5px;
+}
+
 .FileList {
   margin: 0;
-  padding: 0px;
-  min-width: 350px;
+  padding: 0;
 }
 
 .FileListItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px 10px;
 }
 
 .FileListItem:not(:last-of-type) {

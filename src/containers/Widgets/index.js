@@ -3,9 +3,12 @@ import { TabStrip, TabStripTab } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
 
 import AttachmentManager from './AttachmentManager';
+import NotificationCentre from './NotificationCentre';
+import Field from './Field';
+
 export default function Widgets() {
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(2);
 
   const [files, setFiles] = useState([
     { id: "uuid-001", name: 'grant.pdf', size: 1234, url: 'http://www.google.com' }
@@ -45,11 +48,32 @@ export default function Widgets() {
   return (
     <TabStrip selected={selectedTab} onSelect={({ selected }) => setSelectedTab(selected)}>
       <TabStripTab title="Attachment Manager">
-        <AttachmentManager multiple addFiles={addFiles} files={files} removeFile={removeFile} />
+        <AttachmentManager multiple addAttachments={addFiles} attachments={files} removeAttachment={removeFile} />
         <br />
         <Button primary onClick={viewFiles}>View Files</Button>
       </TabStripTab>
 
-    </TabStrip>
+      <TabStripTab title="Notification Centre">
+        <NotificationCentre />
+      </TabStripTab>
+
+      <TabStripTab title="Fields" style={{ border: '1px solid black' }}>
+        <Field label='Name' width={'200px'}>
+          <input style={{ width: '100%' }} />
+        </Field>
+        <hr />
+
+        <Field label='Sex' colon={false} width={'200px'}>
+          <select style={{ width: '100%' }}>
+          </select>
+        </Field>
+
+        <hr />
+        <Field label='Surname' look='bold' inline={false}>
+          Walker
+        </Field>
+      </TabStripTab>
+
+    </TabStrip >
   )
 }

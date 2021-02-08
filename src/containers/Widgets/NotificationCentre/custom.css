@@ -1,0 +1,28 @@
+button:not(:last-of-type) {
+  margin-right: 5px;
+
+}
+
+.Toastify__toast-container {
+  width: 400px;
+}
+
+.Toastify__toast {
+  border-radius: 4px;
+}
+
+/* .Toastify__toast--error {
+  background-color: brown;
+}
+
+.Toastify__toast--success {
+  background-color: brown;
+}
+
+.Toastify__toast--warning {
+  background-color: brown;
+}
+
+.Toastify__toast--info {
+  background-color: brown;
+} */
