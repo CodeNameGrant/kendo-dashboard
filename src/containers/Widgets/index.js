@@ -5,10 +5,11 @@ import { Button } from '@progress/kendo-react-buttons';
 import AttachmentManager from './AttachmentManager';
 import NotificationCentre from './NotificationCentre';
 import Field from './Field';
+import Frequency from './Frequency';
 
 export default function Widgets() {
 
-  const [selectedTab, setSelectedTab] = useState(2);
+  const [selectedTab, setSelectedTab] = useState(3);
 
   const [files, setFiles] = useState([
     { id: "uuid-001", name: 'grant.pdf', size: 1234, url: 'http://www.google.com' }
@@ -72,6 +73,10 @@ export default function Widgets() {
         <Field label='Surname' look='bold' inline={false}>
           Walker
         </Field>
+      </TabStripTab>
+
+      <TabStripTab title="Frequency">
+        <Frequency />
       </TabStripTab>
 
     </TabStrip >
