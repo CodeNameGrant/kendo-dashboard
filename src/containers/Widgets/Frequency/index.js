@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ComboBox, DropDownList } from "@progress/kendo-react-dropdowns";
+import { ComboBox } from "@progress/kendo-react-dropdowns";
 import { Button } from "@progress/kendo-react-buttons";
 import { NumericTextBox } from '@progress/kendo-react-inputs';
 
@@ -8,7 +8,6 @@ const frequencies = [
   { id: "FORT_NIGHTLY", text: "Fortnightly" },
   { id: "FOUR_WEEKLY", text: "Four Weekly" },
 ];
-const weekNumbers = [1, 2, 3, 4, 5, 6, 7];
 
 export default function TaskForm({ task }) {
   const [frequency, setFrequency] = useState(null);
