@@ -19,9 +19,13 @@ export default function TradeChannelTreeDemo() {
         onSelect={onSelectHandler}
         style={{ width: '200px' }}
       />
-      <Button onClick={() => setSelectedNode({ id: 1 })}>Select Furniture</Button>
-      <Button onClick={() => setSelectedNode({ id: 12 })}>Select Furniture/Sofas</Button>
-      <Button onClick={() => setSelectedNode({ id: 231 })}>Select Decor/Carpets/Pursian</Button>
+      <br />
+      <fieldset>
+        <legend>Change selected node from outside Component</legend>
+        <Button onClick={() => setSelectedNode({ id: 1 })}>Select Furniture</Button>
+        <Button onClick={() => setSelectedNode({ id: 12 })}>Select Furniture/Sofas</Button>
+        <Button onClick={() => setSelectedNode({ id: 231 })}>Select Decor/Carpets/Pursian</Button>
+      </fieldset>
     </React.Fragment>
   )
 }
