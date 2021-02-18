@@ -6,10 +6,11 @@ import AttachmentManager from './AttachmentManager';
 import NotificationCentre from './NotificationCentre';
 import Field from './Field';
 import Frequency from './Frequency';
+import TradeChannelTreeDemo from './TradeChannelTreeDemo';
 
 export default function Widgets() {
 
-  const [selectedTab, setSelectedTab] = useState(3);
+  const [selectedTab, setSelectedTab] = useState(4);
 
   const [files, setFiles] = useState([
     { id: "uuid-001", name: 'grant.pdf', size: 1234, url: 'http://www.google.com' }
@@ -77,6 +78,10 @@ export default function Widgets() {
 
       <TabStripTab title="Frequency">
         <Frequency />
+      </TabStripTab>
+
+      <TabStripTab title="Trade Channel Tree">
+        <TradeChannelTreeDemo />
       </TabStripTab>
 
     </TabStrip >
