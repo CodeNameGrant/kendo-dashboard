@@ -1,44 +1,50 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TreeView } from '@progress/kendo-react-treeview'
 import { Button } from '@progress/kendo-react-buttons'
 
 import classes from './TradeChannelTree.module.css';
 
 export default function TradeChannelTree({
-  tradeChannels,
-  setTradeChannels,
+  tradeChannels: masterTradeChannels,
+  selectedNode,
   onSelect,
   style,
-  selectedNode
 }) {
+  const [tradeChannels, setTradeChannels] = useState([...masterTradeChannels])
 
   useEffect(() => {
-    selectedNode && setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => {
-      if (selectedNode === item.id) {
-        item.selected = true;
-      }
-    }))
-  }, [selectedNode, setTradeChannels]);
+    const currentlySelectedNode = findNode(tradeChannels, 'selected', true)
 
-  const onExpandChangeHandler = ({ item }) => {
-    const node = findNodeById(tradeChannels, item.id);
-    if (node) {
-      node.expanded = !node.expanded;
+    if (selectedNode && (!currentlySelectedNode || currentlySelectedNode.id !== selectedNode.id)) {
+      const pathToNode = getPathToNode(tradeChannels, selectedNode);
+      const breadcrumbs = pathToNode.splice(0, pathToNode.length - 1)
+
+      setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => {
+        item.expanded = breadcrumbs.includes(item.id);
+        item.selected = item.id === selectedNode.id
+      }));
+
     }
-  }
 
-  const onItemClickHandler = ({ item }) => {
-    deselectAllNodes(tradeChannels);
+  }, [selectedNode, tradeChannels])
 
-    const node = findNodeById(tradeChannels, item.id);
-    if (node) {
-      node.selected = true;
-    }
+
+  const onItemClickHandler = ({ item: itemSelected }) => {
+    setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => item.selected = item.id === itemSelected.id));
 
     if (onSelect) {
-      onSelect(item);
+      onSelect(itemSelected);
     }
   }
+
+  const onExpandChangeHandler = ({ item: itemExpanded }) => {
+    setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => {
+      if (item.id === itemExpanded.id) {
+        item.expanded = !item.expanded;
+      }
+    }));
+  }
+
 
   const toggleExpandAllHandler = (expandAll) => {
     setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => item.expanded = expandAll))
@@ -87,6 +93,26 @@ const mofityTreeNodes = (treeNodes, modify) => {
   return nodeArray;
 };
 
+const getPathToNode = (treeNodes, findNode) => {
+  let path = [];
+
+  for (const node of treeNodes) {
+    path = [node.id];
+    if (node.id === findNode.id) {
+      return path;
+    }
+
+    if (node.items) {
+      const nestedPath = getPathToNode(node.items, findNode);
+      if (nestedPath.includes(findNode.id)) {
+        return path.concat(nestedPath)
+      }
+    }
+  }
+
+  return path;
+}
+
 export const findNode = (array, field, value) => {
   for (let i = 0; i < array.length; i++) {
     if (array[i][field] && array[i][field] === value) {
@@ -101,19 +127,4 @@ export const findNode = (array, field, value) => {
   }
 
   return null;
-};
-
-export const findNodeById = (array, id) => {
-  return findNode(array, "id", id);
-};
-
-export const deselectAllNodes = (tree) => {
-  for (let i = 0; i < tree.length; i++) {
-    tree[i].selected = false;
-    if (tree[i].items) {
-      deselectAllNodes(tree[i].items);
-    }
-  }
-
-  return tree;
 };

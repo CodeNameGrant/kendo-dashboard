@@ -1,26 +1,27 @@
 import React, { useState } from 'react'
+import { Button } from '@progress/kendo-react-buttons';
 import TradeChannelTree from './TradeChannelTree'
-import masterData from './TradeChannelTree/trade-channels.json';
+import masterTradeChannels from './TradeChannelTree/trade-channels.json';
 
 export default function TradeChannelTreeDemo() {
-  const [tradeChannels, setTradeChannels] = useState(masterData);
+  const [selectedNode, setSelectedNode] = useState({ id: 12, text: 'test' });
 
-  const onSelectHandler = (item) => {
-    console.log('onSelectHandler', item);
+  const onSelectHandler = (node) => {
+    console.log('onSelectHandler', node);
+    setSelectedNode(node)
   }
 
-  console.log('tradeChannels', tradeChannels);
-
-
   return (
-    <TradeChannelTree
-      tradeChannels={tradeChannels}
-      setTradeChannels={setTradeChannels}
-      onSelect={onSelectHandler}
-      width={'200px'}
-      height={'300px'} />
+    <React.Fragment>
+      <TradeChannelTree
+        tradeChannels={masterTradeChannels}
+        selectedNode={selectedNode}
+        onSelect={onSelectHandler}
+        style={{ width: '200px' }}
+      />
+      <Button onClick={() => setSelectedNode({ id: 1 })}>Select Furniture</Button>
+      <Button onClick={() => setSelectedNode({ id: 12 })}>Select Furniture/Sofas</Button>
+      <Button onClick={() => setSelectedNode({ id: 231 })}>Select Decor/Carpets/Pursian</Button>
+    </React.Fragment>
   )
 }
-
-
-// Utils
