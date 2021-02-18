@@ -1,0 +1,25 @@
+[{
+  "id": 1,
+  "text": "Furniture",
+  "items": [
+    { "id": 11, "text": "Tables & Chairs" },
+    { "id": 12, "text": "Sofas" }, 
+    { "id": 13, "text": "Occasional Furniture" }
+  ]
+},
+{
+  "id": 2,
+  "text": "Decor",
+  "items": [
+    { "id": 21, "text": "Bed Linen" },
+    { "id": 22, "text": "Curtains & Blinds" },
+    {
+      "id": 23,
+      "text": "Carpets",
+      "items": [
+        { "id": 231, "text": "Pursian" },
+        { "id": 232, "text": "Not Persian" }
+      ]
+    }
+  ]
+}]
