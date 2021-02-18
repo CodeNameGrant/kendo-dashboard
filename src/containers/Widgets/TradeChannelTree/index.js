@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TreeView } from '@progress/kendo-react-treeview'
 import { Button } from '@progress/kendo-react-buttons'
 
@@ -7,11 +7,18 @@ import classes from './TradeChannelTree.module.css';
 export default function TradeChannelTree({
   tradeChannels,
   setTradeChannels,
-  selection = 'single',
   onSelect,
-  width,
-  height
+  style,
+  selectedNode
 }) {
+
+  useEffect(() => {
+    selectedNode && setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => {
+      if (selectedNode === item.id) {
+        item.selected = true;
+      }
+    }))
+  }, [selectedNode, setTradeChannels]);
 
   const onExpandChangeHandler = ({ item }) => {
     const node = findNodeById(tradeChannels, item.id);
@@ -21,9 +28,7 @@ export default function TradeChannelTree({
   }
 
   const onItemClickHandler = ({ item }) => {
-    if (selection === 'single') {
-      deselectAllNodes(tradeChannels);
-    }
+    deselectAllNodes(tradeChannels);
 
     const node = findNodeById(tradeChannels, item.id);
     if (node) {
@@ -41,11 +46,14 @@ export default function TradeChannelTree({
 
   const clearSelectionHandler = () => {
     setTradeChannels(prevState => mofityTreeNodes(prevState, (item) => item.selected = false))
-    onSelect(null);
+
+    if (onSelect) {
+      onSelect(null);
+    }
   }
 
   return (
-    <div className={classes.Container} style={{ width, height }}>
+    <div className={classes.Container} style={style}>
       <div className={classes.ActionBar}>
         <Button look={'flat'} icon={'plus-outline'} title={'Expand All'} onClick={() => toggleExpandAllHandler(true)}></Button>
         <Button look={'flat'} icon={'minus-outline'} title={'Collapse All'} onClick={() => toggleExpandAllHandler(false)}></Button>
